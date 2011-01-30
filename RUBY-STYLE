@@ -101,6 +101,8 @@ to help me accomplish as much as possible in a minimal length of time.
 
 * Use OO regexps, and avoid =~ $0-9, $~, $` and $' when possible.
 
+* Write raise Exception.new("message") as raise(Exception, 'message')
+
 
 == Naming:
 
@@ -144,6 +146,7 @@ to help me accomplish as much as possible in a minimal length of time.
 
 * Network anonymity support can be accomplished via the socksify and i2p gems.
 
+
 == Optimization:
 
 * Utilize parallel assignment syntax when it's logically appropriate.
@@ -159,6 +162,10 @@ to help me accomplish as much as possible in a minimal length of time.
 
 * Test time-sensitive code on alternate implementations of the Ruby MRI VM such
   as JRuby, rubinius, IronRuby, etc.
+
+* Avoid things like (1 .. n).to_a.each in favor of (1 .. n).each
+
+* A yield statement is significantly faster than Proc#call for blocks.
 
 
 == RESTful Web Services:
@@ -200,7 +207,7 @@ to help me accomplish as much as possible in a minimal length of time.
   ActiveRecord::Helpers::DebugHelper namespace may suffice.
 
 
-== The rest:
+== Miscellaneous:
 
 * Avoid hashes-as-optional-parameters. Does the method do too much?
 
