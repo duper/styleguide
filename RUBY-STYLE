@@ -1,9 +1,45 @@
-= Dan Kubb's Ruby Style Guide
+= duper's Ruby Style Guide (forked from dkubb (forked from chneukirchen))
 
-You may not like all rules presented here, but they work very well for
-me and have helped producing high quality code. Everyone is free to
-code however they want, write and follow their own style guides, but
-when you contribute to my code, please follow these rules:
+This is basically a cheat sheet or reference guide (call it what you want)
+in which I'm incrementally documenting Ruby-specific nuances/idiosyncrasies
+and other useful information regarding common issues I encounter. The only goal
+of the following text outline is to ease my development efforts with the Ruby
+programming language. Do not feel obligated to follow these rules when 
+contributing to projects that I'm also working on. These are simply guidelines 
+to help me accomplish as much as possible in a minimal length of time.
+
+
+== Documentation
+
+* Browse web-based documentation at ruby-doc.org or api.rubyonrails.org
+
+* Read documentation from the command-line with yri (YARD's ruby info script)
+
+* More information about a specific gem can be viewed on the web site for the
+  gem server, such as github.com or rubygems.org. 
+  
+* To view gem source code locally, simply navigate to the rubygems installation 
+  directory under $GEM_PATH/gems (Note: gempath is defined in ~/.gemrc)
+
+* Further help may be sought from the following channels on Freenode IRC:
+  - #ruby (original, but now deprecated channel name)
+  - #ruby-lang (official Ruby language chat)
+  - #rails (discussion pertaining to Ruby on Rails)
+  - #rvm (talk related to Ruby Version Manager)
+  - #bundler (questions concerning packaging of custom gem source code)
+  - #nokogiri (chat about the parsing of tag/SGML-based document types)
+
+
+== REPL (Read-Eval-Print-Loop):
+
+* Configure a history file and GNU readline in the runcom/dot file for 
+  interactive ruby under the filesystem pathname ~/.irbrc
+
+* Setup a gem for irb that performs syntax highlighting.
+
+* Output colorful highlighted syntax from the command line with the coderay gem.
+
+* Example of modularizing ~/.irbrc configuration: load '/etc/.irbrc'
 
 
 == Formatting:
@@ -32,6 +68,8 @@ when you contribute to my code, please follow these rules:
 * Keep lines fewer than 80 characters.
 
 * Strip trailing whitespace.
+
+* To auto-format Ruby code in a manner similar to GNU indent, run rbeautify.
 
 
 == Syntax:
@@ -95,6 +133,73 @@ when you contribute to my code, please follow these rules:
 * Avoid superfluous comments.
 
 
+== Security:
+
+* Consider defining the global SAFE variable when handling untrusted/tainted 
+  user input values; wrap it within a Kernel#module_eval or Kernel#class_eval 
+  block to isolate security-sensitive statements.
+
+* POSIX regular expression character classes can be useful for sanitizing
+  user input strings, i.e. astr.gsub!(/[[:alpha:]+]/, '')
+
+* Network anonymity support can be accomplished via the socksify and i2p gems.
+
+== Optimization:
+
+* Utilize parallel assignment syntax when it's logically appropriate.
+
+* Time loops likely to have exponential amounts of iteration with the stdlib
+  Benchmark class and modify code to speedup as needed based on observations.
+
+* Take advantage of buffered I/O with block syntax where possible, i.e. 
+  File#each_line, HTTPResponse#each_chunk, etc. 
+
+* Define a custom each_chunk method on classes that perform I/O and fail to 
+  provide native buffered I/O functionality.
+
+* Test time-sensitive code on alternate implementations of the Ruby MRI VM such
+  as JRuby, rubinius, IronRuby, etc.
+
+
+== RESTful Web Services:
+
+* Use the Nokogiri gem for parsing well-formed XML or HTML documents.
+
+* Strip all XML and HTML tags from a string value with the sanitize gem via the
+  simple statement: Sanitize.clean(str)
+
+* Quickly parse AJAX data fetched from an URL into a JSON object with open-uri
+  and json from stdlib via: JSON.parse(open('http://host.dom/ajax').read)
+
+
+== Tasks:
+
+* Utilize the jekyll and hyde gems to auto-generate presentation slides as 
+  static HTML documents.
+
+* Consider using the parslet gem when developing rulesets in order to tokenize
+  and parse arbitrary data formats.
+
+* Package custom gem source trees with bundler and/or ore.
+
+* Use rvm (Ruby Version Manager) to maintain multiple Ruby installations.
+
+* Specify gem dependencies in the bundler gemspec file with syntax shown below:
+  - '0.9.15' or '= 0.9.15' (specified version only)
+  - '>~ 0.9' (greater than or equal to specified version)
+  - '>~ 0.9.15' (greater than 0.9.x but less than 1.0)
+
+
+== Debugging:
+
+* To trace executed script statements, run ruby -rtracer script_name.rb at a 
+  command prompt or programatically instantiate the Tracer class from stdlib.
+
+* If the instantiated class requiring inspection implements a to_yaml method for 
+  viewing object state variables, then the helper method defined within the
+  ActiveRecord::Helpers::DebugHelper namespace may suffice.
+
+
 == The rest:
 
 * Avoid hashes-as-optional-parameters. Does the method do too much?
@@ -130,6 +235,7 @@ when you contribute to my code, please follow these rules:
 
 * Try to keep methods at no more than 10 lines long, and preferably
   5 or less.
+
 
 == General:
 
